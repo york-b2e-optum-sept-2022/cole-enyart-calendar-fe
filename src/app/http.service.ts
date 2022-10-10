@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IAccount} from "./_interfaces/IAccount";
-import {IProduct} from "./_interfaces/IProduct";
-import {ICart} from "./_interfaces/ICart";
+import {IUser} from "./_interfaces/IUser";
+import {IEvent} from "./_interfaces/IEvent"
+import {IInvite} from "./_interfaces/IInvite";
 
 @Injectable({
   providedIn: 'root'
@@ -15,41 +15,27 @@ export class HttpService {
 
   findAccountsByEmail(email: string) {
     return this.httpClient.get(
-      'http://localhost:3000/accounts?email=' + email,
-    ) as Observable<IAccount[]>;
+      'http://localhost:3000/users?email=' + email,
+    ) as Observable<IUser[]>;
   }
 
-  register(form: IAccount) {
+  register(form: IUser) {
     return this.httpClient.post(
-      'http://localhost:3000/accounts',
+      'http://localhost:3000/users',
       form
-    ) as Observable<IAccount>;
+    ) as Observable<IUser>;
   }
 
-  getProductList() {
+  getEventList() {
     return this.httpClient.get(
-      'http://localhost:3000/products'
-    ) as Observable<IProduct[]>
+      'http://localhost:3000/users'
+    ) as Observable<IEvent[]>
   }
 
-
-  createCart(cart: ICart) {
-    return this.httpClient.post(
-      'http://localhost:3000/carts',
-      cart
-    ) as Observable<ICart>;
-  }
-
-  getCartById(id: string) {
+  getInviteList() {
     return this.httpClient.get(
-      'http://localhost:3000/carts/' + id,
-    ) as Observable<ICart>;
+      'http://localhost:3000/users'
+    ) as Observable<IInvite[]>
   }
 
-  updateCart(cart: ICart) {
-    return this.httpClient.put(
-      'http://localhost:3000/carts/' + cart.id,
-      cart
-    ) as Observable<ICart>;
-  }
 }

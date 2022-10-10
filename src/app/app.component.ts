@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
-import {AccountService} from "./account.service";
+import {UserService} from "./user.service";
 import {Subject, takeUntil} from "rxjs";
-import {CartService} from "./cart.service";
+import {InvitesService} from "./invites.service";
 
 @Component({
   selector: 'app-root',
@@ -12,15 +12,15 @@ export class AppComponent implements OnDestroy {
 
   isLoggedIn: boolean = false;
   isRegistering: boolean = false;
-  isViewingCart: boolean = false;
+  isViewingInvites: boolean = false;
 
   onDestroy = new Subject();
 
   constructor(
-    private cartService: CartService,
-    private accountService: AccountService,
+    private invitesService: InvitesService,
+    private accountService: UserService,
   ) {
-    this.accountService.$account
+    this.accountService.$user
       .pipe(takeUntil(this.onDestroy))
       .subscribe(account => {
         this.isLoggedIn = account ? true : false;
@@ -30,10 +30,10 @@ export class AppComponent implements OnDestroy {
       .subscribe(isRegistering => {
         this.isRegistering = isRegistering;
       });
-    this.cartService.$isViewingCart
+    this.invitesService.$isViewingInvites
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(isViewingCart => {
-        this.isViewingCart = isViewingCart
+      .subscribe(isViewingInvites => {
+        this.isViewingInvites = isViewingInvites
       })
   }
 

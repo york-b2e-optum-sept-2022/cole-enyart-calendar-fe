@@ -8,9 +8,10 @@ import {FormsModule} from "@angular/forms";
 import { LoginComponent } from './login/login.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { RegisterComponent } from './register/register.component';
-import { ProductListComponent } from './product-list/product-list.component';
-import { ProductComponent } from './product/product.component';
-import { CartComponent } from './cart/cart.component';
+import { EventListComponent } from './event-list/event-list.component';
+import { EventComponent } from './event/event.component';
+import { InviteComponent } from './invite/invite.component';
+import { InviteListComponent } from './invite-list/invite-list.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +19,10 @@ import { CartComponent } from './cart/cart.component';
     LoginComponent,
     NavBarComponent,
     RegisterComponent,
-    ProductListComponent,
-    ProductComponent,
-    CartComponent
+    EventListComponent,
+    EventComponent,
+    InviteComponent,
+    InviteListComponent,
   ],
   imports: [
     BrowserModule,

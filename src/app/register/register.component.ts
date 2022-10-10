@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {AccountService} from "../account.service";
+import {UserService} from "../user.service";
 import {NgForm} from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
 import {IRegistrationForm} from "../_interfaces/IRegistrationForm";
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnDestroy {
   errorMessage: string | null = null;
   onDestroy = new Subject();
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: UserService) {
     this.accountService
       .$registrationError
       .pipe(takeUntil(this.onDestroy))

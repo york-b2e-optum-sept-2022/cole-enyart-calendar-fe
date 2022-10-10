@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {BehaviorSubject, first} from "rxjs";
-import {IAccount} from "./_interfaces/IAccount";
+import {IUser} from "./_interfaces/IUser";
 import {IRegistrationForm} from "./_interfaces/IRegistrationForm";
 import {v4 as uuid} from 'uuid';
 import {ILoginForm} from "./_interfaces/ILoginForm";
@@ -9,15 +9,17 @@ import {ILoginForm} from "./_interfaces/ILoginForm";
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class UserService {
 
-  $account = new BehaviorSubject<IAccount | null>(
+  $user = new BehaviorSubject<IUser | null>(
     {
       "id": "f48430e8-d20e-4735-838e-19a1583221c7",
       "email": "test@test.com",
-      "firstName": "Adam",
-      "lastName": "Street",
-      "password": "password"
+      "firstName": "test",
+      "lastName": "tester",
+      "password": "123",
+      "eventList": [],
+      "inviteList": []
     }
   );
   $isRegistering = new BehaviorSubject<boolean>(false);
@@ -41,7 +43,7 @@ export class AccountService {
   }
 
   logout() {
-    this.$account.next(null);
+    this.$user.next(null);
   }
 
   login(form: ILoginForm) {
@@ -68,7 +70,7 @@ export class AccountService {
         }
 
         // login
-        this.$account.next(foundAccount);
+        this.$user.next(foundAccount);
       },
       error: (err) => {
         console.error(err);
@@ -110,17 +112,19 @@ export class AccountService {
         }
 
         // all validation has passed, create the account
-        const account: IAccount = {
+        const account: IUser = {
           id: uuid(),
           email: form.email,
           firstName: form.firstName,
           lastName: form.lastName,
-          password: form.password
+          password: form.password,
+          eventList: [],
+          inviteList: []
         }
 
         this.httpService.register(account).pipe(first()).subscribe({
           next: (account) => {
-            this.$account.next(account);
+            this.$user.next(account);
           },
           error: (err) => {
             console.error(err)

@@ -1,42 +1,41 @@
 import {Component, OnDestroy} from '@angular/core';
-import {IAccount} from "../_interfaces/IAccount";
+import {IUser} from "../_interfaces/IUser";
 import {Subject, takeUntil} from "rxjs";
-import {AccountService} from "../account.service";
-import {CartService} from "../cart.service";
-import {ProductsService} from "../products.service";
+import {UserService} from "../user.service";
+import {InvitesService} from "../invites.service";
+import {EventsService} from "../events.service";
 
 @Component({
   selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
+  templateUrl: './nav-bar.component.html'
 })
 export class NavBarComponent implements OnDestroy {
   searchText = "";
-  account: IAccount | null = null;
-  cartCount: number | null = null;
-  isViewingCart: boolean = false;
+  user: IUser | null = null;
+  inviteCount: number | null = null;
+  isViewingInvites: boolean = false;
 
   onDestroy = new Subject();
 
   constructor(
-    private cartService: CartService,
-    private accountService: AccountService,
-    private productService: ProductsService
+    private userService: UserService,
+    private eventsService: EventsService,
+    private invitesService: InvitesService
   ) {
-    this.accountService.$account
+    this.userService.$user
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(account => {
-        this.account = account
+      .subscribe(user => {
+        this.user = user
       })
-    this.cartService.$cart
+    this.userService.$user
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(cart => {
-        this.cartCount = cart?.productList?.length ?? null
+      .subscribe(invite => {
+        this.inviteCount = invite?.inviteList?.length ?? null
       });
-    this.cartService.$isViewingCart
+    this.invitesService.$isViewingInvites
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(isViewingCart => {
-        this.isViewingCart = isViewingCart
+      .subscribe(isViewingInvites => {
+        this.isViewingInvites = isViewingInvites
       })
   }
 
@@ -45,16 +44,16 @@ export class NavBarComponent implements OnDestroy {
     this.onDestroy.complete();
   }
 
-  onCartClick() {
-    this.cartService.$isViewingCart.next(!this.isViewingCart)
+  onInviteClick() {
+    this.invitesService.$isViewingInvites.next(!this.isViewingInvites)
   }
 
   onLogoutClick() {
-    this.accountService.logout();
+    this.userService.logout();
   }
 
   onSearchTextChange(text: string) {
-    this.productService.onSearchTextChange(text);
+    this.eventsService.onSearchTextChange(text);
   }
 
 }

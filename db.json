@@ -1,63 +1,46 @@
 {
-  "accounts": [
+  "users": [
     {
       "id": "f48430e8-d20e-4735-838e-19a1583221c7",
       "email": "test@test.com",
-      "firstName": "Adam",
-      "lastName": "Street",
-      "password": "password"
-    }
-  ],
-  "carts": [
-    {
-      "id": "f48430e8-d20e-4735-838e-19a1583221c7",
-      "productList": [
+      "firstName": "Test",
+      "lastName": "Tester",
+      "password": "123",
+      "eventList": [
         {
-          "count": 1,
-          "product": {
-            "imgUrl": "http://guesseu.scene7.com/is/image/GuessEU/WC0001FMSWC-G5?wid=520&fmt=jpeg&qlt=80&op_sharpen=0&op_usm=1.0,1.0,5,0&iccEmbed=0",
-            "name": "GUESS CONNECT WATCH",
-            "price": 438.9,
-            "rating": 5
-          }
+          "id": 1,
+          "date": "10/10/22",
+          "name": "Test Project",
+          "description": "The cat sat",
+          "invite" : "gj43h"
         }
       ],
-      "subTotal": 438.9,
-      "taxTotal": 30.72,
-      "shippingTotal": 0,
-      "costTotal": 469.62
-    }
-  ],
-  "products": [
-    {
-      "imgUrl": "https://guesseu.scene7.com/is/image/GuessEU/M63H24W7JF0-L302-ALTGHOST?wid=1500&fmt=jpeg&qlt=80&op_sharpen=0&op_usm=1.0,1.0,5,0&iccEmbed=0",
-      "name": "CHECK PRINT SHIRT",
-      "price": 110,
-      "rating": 4
+      "inviteList": [
+        {
+          "id": 33,
+          "date": "10/10/22",
+          "name": "Dune Buggie",
+          "description": "Go up and down the dunes"
+        }
+      ]
     },
     {
-      "imgUrl": "https://guesseu.scene7.com/is/image/GuessEU/FLGLO4FAL12-BEIBR?wid=700&amp;fmt=jpeg&amp;qlt=80&amp;op_sharpen=0&amp;op_usm=1.0,1.0,5,0&amp;iccEmbed=0",
-      "name": "GLORIA HIGH LOGO SNEAKER",
-      "price": 91,
-      "rating": 3
-    },
-    {
-      "imgUrl": "https://guesseu.scene7.com/is/image/GuessEU/HWVG6216060-TAN?wid=700&amp;fmt=jpeg&amp;qlt=80&amp;op_sharpen=0&amp;op_usm=1.0,1.0,5,0&amp;iccEmbed=0",
-      "name": "CATE RIGID BAG",
-      "price": 94.5,
-      "rating": 2
-    },
-    {
-      "imgUrl": "http://guesseu.scene7.com/is/image/GuessEU/WC0001FMSWC-G5?wid=520&fmt=jpeg&qlt=80&op_sharpen=0&op_usm=1.0,1.0,5,0&iccEmbed=0",
-      "name": "GUESS CONNECT WATCH",
-      "price": 438.9,
-      "rating": 5
-    },
-    {
-      "imgUrl": "https://guesseu.scene7.com/is/image/GuessEU/AW6308VIS03-SAP?wid=700&amp;fmt=jpeg&amp;qlt=80&amp;op_sharpen=0&amp;op_usm=1.0,1.0,5,0&amp;iccEmbed=0",
-      "name": "'70s RETRO GLAM KEFIAH",
-      "price": 20,
-      "rating": 3
+      "id": "gj43h",
+      "email": "john@smith.com",
+      "firstName": "john",
+      "lastName": "smith",
+      "password": "321",
+      "eventList": [
+        {
+          "id": 33,
+          "date": "10/10/22",
+          "name": "Dune Buggie",
+          "description": "Go up and down the dunes",
+          "invite" : "f48430e8-d20e-4735-838e-19a1583221c7"
+        }
+      ],
+      "inviteList": [
+      ]
     }
   ]
 }
