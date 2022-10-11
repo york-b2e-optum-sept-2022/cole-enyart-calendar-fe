@@ -6,8 +6,7 @@ import {ILoginForm} from "../_interfaces/ILoginForm";
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnDestroy {
 

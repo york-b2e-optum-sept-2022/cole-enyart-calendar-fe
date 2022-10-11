@@ -52,8 +52,8 @@ export class NavBarComponent implements OnDestroy {
     this.userService.logout();
   }
 
-  onSearchTextChange(text: string) {
-    this.eventsService.onSearchTextChange(text);
-  }
+  // onSearchTextChange(text: string) {
+  //   this.eventsService.onSearchTextChange(text);
+  // }
 
 }

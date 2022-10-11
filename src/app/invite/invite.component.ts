@@ -1,5 +1,5 @@
 import {Component, Input,} from '@angular/core';
-import {IInvite} from "../_interfaces/IInvite";
+import {IEvent} from "../_interfaces/IEvent";
 
 @Component({
   selector: 'app-invite',
@@ -7,6 +7,6 @@ import {IInvite} from "../_interfaces/IInvite";
 })
 export class InviteComponent {
 
-  @Input() invite!: IInvite;
+  @Input() invite!: IEvent;
   @Input() viewInvites!: boolean;
 }

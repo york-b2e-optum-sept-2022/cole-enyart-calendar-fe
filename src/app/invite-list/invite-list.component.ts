@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {InvitesService} from "../invites.service";
-import {IInvite} from "../_interfaces/IInvite";
 import {Subject, takeUntil} from "rxjs";
+import {IUser} from "../_interfaces/IUser";
 
 @Component({
   selector: 'app-invite-list',
@@ -9,7 +9,7 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class InviteListComponent implements OnDestroy {
 
-  inviteList: IInvite[] = [];
+  inviteList: IUser[] = [];
   errorMessage: string | null = null;
 
   onDestroy = new Subject();

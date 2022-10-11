@@ -8,16 +8,13 @@
       "password": "123",
       "eventList": [
         {
-          "id": 1,
           "date": "10/10/22",
           "name": "Test Project",
-          "description": "The cat sat",
-          "invite" : "gj43h"
+          "description": "The cat sat"
         }
       ],
       "inviteList": [
         {
-          "id": 33,
           "date": "10/10/22",
           "name": "Dune Buggie",
           "description": "Go up and down the dunes"
@@ -32,11 +29,9 @@
       "password": "321",
       "eventList": [
         {
-          "id": 33,
           "date": "10/10/22",
           "name": "Dune Buggie",
-          "description": "Go up and down the dunes",
-          "invite" : "f48430e8-d20e-4735-838e-19a1583221c7"
+          "description": "Go up and down the dunes"
         }
       ],
       "inviteList": [

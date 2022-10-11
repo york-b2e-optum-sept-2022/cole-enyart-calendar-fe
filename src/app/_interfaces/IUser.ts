@@ -1,5 +1,4 @@
 import {IEvent} from "./IEvent";
-import {IInvite} from "./IInvite";
 
 export interface IUser {
   id: string;
@@ -8,5 +7,5 @@ export interface IUser {
   lastName: string;
   password: string;
   eventList: IEvent[];
-  inviteList: IInvite[];
+  inviteList: IEvent[];
 }

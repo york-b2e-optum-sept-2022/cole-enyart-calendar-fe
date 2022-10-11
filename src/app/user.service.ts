@@ -11,16 +11,16 @@ import {ILoginForm} from "./_interfaces/ILoginForm";
 })
 export class UserService {
 
-  $user = new BehaviorSubject<IUser | null>(
-    {
-      "id": "f48430e8-d20e-4735-838e-19a1583221c7",
-      "email": "test@test.com",
-      "firstName": "test",
-      "lastName": "tester",
-      "password": "123",
-      "eventList": [],
-      "inviteList": []
-    }
+  $user = new BehaviorSubject<IUser | null>( null
+    // {
+    //   "id": "f48430e8-d20e-4735-838e-19a1583221c7",
+    //   "email": "test@test.com",
+    //   "firstName": "test",
+    //   "lastName": "tester",
+    //   "password": "123",
+    //   "eventList": [],
+    //   "inviteList": []
+    // }
   );
   $isRegistering = new BehaviorSubject<boolean>(false);
   $registrationError = new BehaviorSubject<string | null>(null);
@@ -57,7 +57,7 @@ export class UserService {
       return;
     }
 
-    this.httpService.findAccountsByEmail(form.email).pipe(first()).subscribe({
+    this.httpService.findUsersByEmail(form.email).pipe(first()).subscribe({
       next: (accountList) => {
 
         // validate password
@@ -71,12 +71,14 @@ export class UserService {
 
         // login
         this.$user.next(foundAccount);
+        console.log(this.$user.getValue());
       },
       error: (err) => {
         console.error(err);
         this.$loginError.next(this.LOGIN_HTTP_ERROR_MESSAGE)
       }
     });
+
 
   }
 
@@ -104,7 +106,7 @@ export class UserService {
     }
 
     // check if account is already registered with input email
-    this.httpService.findAccountsByEmail(form.email).pipe(first()).subscribe({
+    this.httpService.findUsersByEmail(form.email).pipe(first()).subscribe({
       next: (accountList) => {
         if (accountList.length > 0) {
           this.$registrationError.next(this.REGISTER_EXISTING_ACCOUNT_MESSAGE)

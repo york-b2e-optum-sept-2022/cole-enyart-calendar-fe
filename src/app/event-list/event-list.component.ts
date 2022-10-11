@@ -15,12 +15,14 @@ export class EventListComponent implements OnDestroy {
   onDestroy = new Subject();
 
   constructor(private eventsService: EventsService) {
+      console.log(this.eventList);
     this.eventsService.$eventList.pipe(takeUntil(this.onDestroy)).subscribe(
       eventList => this.eventList = eventList
     );
     this.eventsService.$eventListError.pipe(takeUntil(this.onDestroy)).subscribe(
       message => this.errorMessage = message
-    )
+    );
+
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {IEvent} from "../_interfaces/IEvent";
 import {EventsService} from "../events.service";
+import {IEvent} from "../_interfaces/IEvent";
 
 @Component({
   selector: 'app-event',
@@ -12,6 +12,7 @@ export class EventComponent {
   @Input() viewInvites!: boolean;
 
   constructor(private eventsService: EventsService) {
+    console.log(this.event);
   }
 
   // onAddToCartClick() {
