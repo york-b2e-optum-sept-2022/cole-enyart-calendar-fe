@@ -5,6 +5,10 @@
       <div>{{event.date}}</div>
       <div>{{event.name | titlecase}}</div>
       <div>{{event.description}}</div>
+      <button (click)="onRemoveEvent()" class="btn btn-outline-danger m-1">
+        <i class="bi bi-trash"></i>
+        <div>Remove</div>
+      </button>
     </h6>
   </div>
 

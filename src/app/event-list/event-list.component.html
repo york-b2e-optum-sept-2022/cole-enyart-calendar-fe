@@ -1,8 +1,21 @@
-<div class="d-flex flex-wrap">
-  <app-event
-    *ngFor="let event of eventList"
-    [event]="event"
-    [viewInvites]="false"
-    class="w-25 p-2"
-  ></app-event>
+<button (click)="onCreateEventClick()" class="btn btn-outline-primary">Create Event</button>
+
+<div class="d-flex">
+  <div class="w-50 p-2"> Events
+    <app-event
+      *ngFor="let event of eventList"
+      [event]="event"
+      [viewInvites]="false"
+      class="w-25 p-2"
+    ></app-event>
+  </div>
+
+  <div class="w-50 p-2"> Invites
+    <app-event
+      *ngFor="let invite of eventInviteList"
+      [event]="invite"
+      [viewInvites]="false"
+      class="w-25 p-2"
+    ></app-event>
+  </div>
 </div>

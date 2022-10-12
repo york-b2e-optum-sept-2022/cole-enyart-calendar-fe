@@ -12,7 +12,7 @@ export class EventComponent {
   @Input() viewInvites!: boolean;
 
   constructor(private eventsService: EventsService) {
-    console.log(this.event);
+
   }
 
   // onAddToCartClick() {
@@ -30,8 +30,8 @@ export class EventComponent {
   //     this.event, this.cartCount - 1
   //   );
   // }
-  //
-  // onRemoveProduct() {
-  //   this.cartService.removeItemFromCart(this.event);
-  // }
+
+  onRemoveEvent() {
+    this.eventsService.removeEventFromUser(this.event);
+  }
 }

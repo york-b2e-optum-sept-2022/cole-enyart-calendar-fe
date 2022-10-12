@@ -12,6 +12,7 @@ export class EventsService implements OnDestroy{
 
   _eventList: IUser[] = [];
   $eventList = new BehaviorSubject<IEvent[]>([]);
+  $eventInviteList = new BehaviorSubject<IEvent[]>([]);
   $eventListError = new BehaviorSubject<string | null>(null);
 
   private readonly EVENT_LIST_HTTP_ERROR = 'Unable to get the list of events, please try again later';
@@ -25,25 +26,22 @@ export class EventsService implements OnDestroy{
         return;
       }
       this.$eventList.next(event.eventList);
-      console.log(this.$eventList);
+      this.$eventInviteList.next(event.inviteList);
+      console.log(event.eventList);
     })
-
-
-    // this.httpService.getUserList().pipe(first()).subscribe({
-    //   next: eventList => {
-    //     this._eventList = eventList;
-    //     this.$eventList.next(eventList);
-    //   },
-    //   error: (err) => {
-    //     console.error(err);
-    //     this.$eventListError.next(this.EVENT_LIST_HTTP_ERROR);
-    //   }
-    // });
   }
 
   ngOnDestroy(): void {
     this.onDestroy.next(null);
     this.onDestroy.complete();
+  }
+
+  addEventToUser() {
+    console.log("add clicked");
+  }
+
+  removeEventFromUser(event: IEvent) {
+    console.log("remove clicked", event);
   }
 
   // onSearchTextChange(searchText: string) {

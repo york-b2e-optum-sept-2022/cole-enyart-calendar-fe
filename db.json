@@ -11,6 +11,16 @@
           "date": "10/10/22",
           "name": "Test Project",
           "description": "The cat sat"
+        },
+        {
+          "date": "10/11/22",
+          "name": "Uno",
+          "description": "The first and only"
+        },
+        {
+          "date": "10/12/22",
+          "name": "Dos",
+          "description": "Second is the best"
         }
       ],
       "inviteList": [
