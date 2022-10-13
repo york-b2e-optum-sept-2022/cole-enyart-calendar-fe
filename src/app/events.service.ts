@@ -15,6 +15,13 @@ export class EventsService implements OnDestroy {
   user!: IUser;
   $user = new Subject<IUser[]>();
   // $user = new BehaviorSubject<IUser | null>( null);
+  event!: IEvent;
+  $event = new Subject<IEvent>();
+  // $event = new BehaviorSubject<IEvent>({
+  //   id: "",
+  //   dp: new Date(),
+  //   name: "",
+  //   description: ""});
   $eventList = new BehaviorSubject<IEvent[]>([]);
   $eventInviteList = new BehaviorSubject<IEvent[]>([]);
   $eventListError = new BehaviorSubject<string | null>(null);
@@ -32,7 +39,6 @@ export class EventsService implements OnDestroy {
       this.user = event;
       this.$eventList.next(event.eventList);
       this.$eventInviteList.next(event.inviteList);
-      console.log(event.eventList);
     })
   }
 
@@ -66,6 +72,14 @@ export class EventsService implements OnDestroy {
         console.error(err);
       }
     })
+  }
+
+  viewEvent(event: IEvent) {
+    this.event = event;
+    console.log(this.event);
+
+    this.$event.next(this.event);
+    console.log(this.$event);
   }
 
   removeEventFromUser(event: IEvent) {

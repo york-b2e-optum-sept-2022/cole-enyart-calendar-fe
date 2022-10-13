@@ -5,8 +5,7 @@
     <app-event
       *ngFor="let event of eventList"
       [event]="event"
-      [viewInvites]="false"
-      class="w-25 p-2"
+      class="w-25 p-2 d-flex"
     ></app-event>
   </div>
 
@@ -14,8 +13,7 @@
     <app-event
       *ngFor="let invite of eventInviteList"
       [event]="invite"
-      [viewInvites]="false"
-      class="w-25 p-2"
+      class="w-25 p-2 d-flex"
     ></app-event>
   </div>
 </div>
