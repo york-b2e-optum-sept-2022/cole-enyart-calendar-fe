@@ -10,7 +10,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { RegisterComponent } from './register/register.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { EventComponent } from './event/event.component';
-import { InviteComponent } from './invite/invite.component';
 import { ModalCreateEventComponent } from './modal-create-event/modal-create-event.component';
 
 @NgModule({
@@ -21,7 +20,6 @@ import { ModalCreateEventComponent } from './modal-create-event/modal-create-eve
     RegisterComponent,
     EventListComponent,
     EventComponent,
-    InviteComponent,
     ModalCreateEventComponent,
   ],
   imports: [

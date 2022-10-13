@@ -8,28 +8,22 @@
       "password": "123",
       "eventList": [
         {
-          "date": "10/10/22",
-          "name": "Test Project",
-          "description": "The cat sat"
+          "dp": "2022-10-13T17:00:00.000Z",
+          "name": "1",
+          "description": "1",
+          "id": "bc49c0a1-573a-4808-8ffa-0d6ca69bbc4e"
         },
         {
-          "date": "10/11/22",
-          "name": "Uno",
-          "description": "The first and only"
+          "dp": "2022-10-14T17:00:00.000Z",
+          "name": "2",
+          "description": "2",
+          "id": "78634b1a-7c7c-479e-a98c-0f44abea5141"
         },
         {
-          "date": "10/12/22",
-          "name": "Dos",
-          "description": "Second is the best"
-        },
-        {
-          "dp": {
-            "year": 2022,
-            "month": 10,
-            "day": 16
-          },
-          "name": "the",
-          "description": "cat"
+          "dp": "2022-10-10T17:00:00.000Z",
+          "name": "3",
+          "description": "3",
+          "id": "ebfd8733-2ab0-470e-bbc5-a14d829f1918"
         }
       ],
       "inviteList": [

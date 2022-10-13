@@ -4,11 +4,12 @@ import {BehaviorSubject, first, Subject, takeUntil} from "rxjs";
 import {IEvent} from "./_interfaces/IEvent";
 import {IUser} from "./_interfaces/IUser";
 import {UserService} from "./user.service";
+import {v4 as uuidv4} from "uuid";
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventsService implements OnDestroy{
+export class EventsService implements OnDestroy {
 
   _eventList: IUser[] = [];
   user!: IUser;
@@ -43,8 +44,9 @@ export class EventsService implements OnDestroy{
   addEventToUser(form: IEvent) {
     console.log("add clicked", form);
 
-    const calendar = this.$eventList.getValue();
-    calendar.push(form);
+    const event = this.$eventList.getValue();
+    form.id = uuidv4();
+    event.push(form);
 
     const user: IUser = {
       id: this.user.id,
@@ -52,7 +54,7 @@ export class EventsService implements OnDestroy{
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       password: this.user.password,
-      eventList: calendar,
+      eventList: event,
       inviteList: this.user.inviteList,
     }
 

@@ -11,7 +11,6 @@ export class AppComponent implements OnDestroy {
 
   isLoggedIn: boolean = false;
   isRegistering: boolean = false;
-  isViewingInvites: boolean = false;
 
   onDestroy = new Subject();
 
