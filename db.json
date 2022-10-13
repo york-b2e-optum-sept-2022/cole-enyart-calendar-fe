@@ -21,6 +21,15 @@
           "date": "10/12/22",
           "name": "Dos",
           "description": "Second is the best"
+        },
+        {
+          "dp": {
+            "year": 2022,
+            "month": 10,
+            "day": 16
+          },
+          "name": "the",
+          "description": "cat"
         }
       ],
       "inviteList": [
@@ -44,8 +53,7 @@
           "description": "Go up and down the dunes"
         }
       ],
-      "inviteList": [
-      ]
+      "inviteList": []
     }
   ]
 }

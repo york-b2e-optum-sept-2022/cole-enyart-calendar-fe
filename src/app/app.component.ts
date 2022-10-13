@@ -1,7 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {UserService} from "./user.service";
 import {Subject, takeUntil} from "rxjs";
-import {InvitesService} from "./invites.service";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,6 @@ export class AppComponent implements OnDestroy {
   onDestroy = new Subject();
 
   constructor(
-    private invitesService: InvitesService,
     private accountService: UserService,
   ) {
     this.accountService.$user
@@ -30,11 +28,6 @@ export class AppComponent implements OnDestroy {
       .subscribe(isRegistering => {
         this.isRegistering = isRegistering;
       });
-    this.invitesService.$isViewingInvites
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(isViewingInvites => {
-        this.isViewingInvites = isViewingInvites
-      })
   }
 
   ngOnDestroy() {

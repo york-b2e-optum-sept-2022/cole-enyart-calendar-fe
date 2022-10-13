@@ -11,7 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { EventComponent } from './event/event.component';
 import { InviteComponent } from './invite/invite.component';
-import { InviteListComponent } from './invite-list/invite-list.component';
+import { ModalCreateEventComponent } from './modal-create-event/modal-create-event.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { InviteListComponent } from './invite-list/invite-list.component';
     EventListComponent,
     EventComponent,
     InviteComponent,
-    InviteListComponent,
+    ModalCreateEventComponent,
   ],
   imports: [
     BrowserModule,

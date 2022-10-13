@@ -24,9 +24,10 @@ export class HttpService {
     ) as Observable<IUser>;
   }
 
-  getUserList() {
-    return this.httpClient.get(
-      'http://localhost:3000/users'
+  createEvent(user: IUser) {
+    return this.httpClient.put(
+      'http://localhost:3000/users/' + user.id,
+      user
     ) as Observable<IUser[]>
   }
 
