@@ -16,6 +16,7 @@ export class ModalCreateEventComponent {
 
   onCreateEventClick(form: NgForm) {
     this.eventsService.addEventToUser(form.value as IEvent);
+    this.eventsService.addInviteToUser(form.value as IEvent);
   }
 
 }

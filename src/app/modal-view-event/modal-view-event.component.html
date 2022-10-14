@@ -8,6 +8,7 @@
       <div>{{event.dp | date}}</div>
       <div>{{event.name}}</div>
       <div>{{event.description}}</div>
+      <div>{{event.invite}}</div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-primary m-1" (click)="onEditEventClick()">Edit</button>
@@ -56,6 +57,11 @@
                  id="DescriptionOfEvent">
           <label for="DescriptionOfEvent">Description</label>
         </div>
+        <div class="form-floating mb-3">
+          <input name="invite" ngModel="{{event.invite}}" type="text" class="form-control" id="inviteEmail">
+          <label for="inviteEmail">Invite</label>
+        </div>
+
       </form>
     </div>
     <div class="modal-footer">

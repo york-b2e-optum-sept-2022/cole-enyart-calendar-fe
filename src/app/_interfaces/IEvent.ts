@@ -3,4 +3,5 @@ export interface IEvent {
   dp: Date;
   name: string;
   description: string;
+  invite: string;
 }

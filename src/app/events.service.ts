@@ -17,6 +17,8 @@ export class EventsService implements OnDestroy {
   // $user = new BehaviorSubject<IUser | null>( null);
   $event = new BehaviorSubject<IEvent | null>(null);
   $eventList = new BehaviorSubject<IEvent[]>([]);
+
+  $inviteUser = new BehaviorSubject<IUser[] | null>(null);
   $eventInviteList = new BehaviorSubject<IEvent[]>([]);
   $eventListError = new BehaviorSubject<string | null>(null);
 
@@ -26,14 +28,16 @@ export class EventsService implements OnDestroy {
 
   constructor(private httpService: HttpService, private userService: UserService) {
 
-    this.userService.$user.pipe(takeUntil(this.onDestroy)).subscribe((event) => {
-      if (event === null) {
+    this.userService.$user.pipe(takeUntil(this.onDestroy)).subscribe((user) => {
+      if (user === null) {
         return;
       }
-      this.user = event;
-      this.$eventList.next(event.eventList);
-      this.$eventInviteList.next(event.inviteList);
+      this.user = user;
+      this.$eventList.next(user.eventList);
+      this.$eventInviteList.next(user.inviteList);
+      this.sort(user);
     })
+
   }
 
   ngOnDestroy(): void {
@@ -61,6 +65,50 @@ export class EventsService implements OnDestroy {
     this.saveUser(user);
   }
 
+  addInviteToUser(form: IEvent) {
+    this.httpService.findUsersByEmail(form.invite).pipe(first()).subscribe({
+      next: (userList) => {
+
+        // validate password
+        const foundAccount = userList.find(
+          account => account.email === form.invite
+        );
+        if (!foundAccount) {
+          // this.$loginError.next(this.LOGIN_INVALID_CREDENTIALS);
+          return;
+        }
+
+        const invite = foundAccount.inviteList;
+        invite.push(form);
+
+        const user: IUser = {
+          id: foundAccount.id,
+          email: foundAccount.email,
+          firstName: foundAccount.firstName,
+          lastName: foundAccount.lastName,
+          password: foundAccount.password,
+          eventList: foundAccount.eventList,
+          inviteList: invite,
+        }
+
+        this.httpService.updateUser(user).pipe(first()).subscribe({
+          next: (user) => {
+            this.$inviteUser.next(user);
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        })
+
+        this.sort(user);
+      },
+      error: (err) => {
+        console.error(err);
+        // this.$loginError.next(this.LOGIN_HTTP_ERROR_MESSAGE)
+      }
+    });
+  }
+
   viewEvent(event: IEvent) {
     if (this.$event !== null) {
       this.$event.next(event);
@@ -80,19 +128,20 @@ export class EventsService implements OnDestroy {
     this.saveUser(user);
   }
 
-  updateEventForUser(event: IEvent, form: IEvent) {
-    console.log("edit clicked", event, form);
+  updateEventForUser(oldEvent: IEvent, newEvent: IEvent) {
+    console.log("edit clicked", oldEvent, newEvent);
 
     const user = this.user;
 
-    const eventValue = user.eventList.find(eventItem => eventItem.id === event.id);
+    const eventValue = user.eventList.find(eventItem => eventItem.id === oldEvent.id);
     if (!eventValue) {
       return;
     }
 
-    eventValue.dp = form.dp;
-    eventValue.name = form.name;
-    eventValue.description = form.description;
+    eventValue.dp = newEvent.dp;
+    eventValue.name = newEvent.name;
+    eventValue.description = newEvent.description;
+    eventValue.invite = newEvent.invite;
 
     this.saveUser(user);
   }
