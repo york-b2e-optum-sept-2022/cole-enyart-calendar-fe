@@ -15,7 +15,7 @@ export class EventsService implements OnDestroy {
   user!: IUser;
   $user = new Subject<IUser[]>();
   // $user = new BehaviorSubject<IUser | null>( null);
-  $event = new BehaviorSubject<IEvent | null>( null);
+  $event = new BehaviorSubject<IEvent | null>(null);
   $eventList = new BehaviorSubject<IEvent[]>([]);
   $eventInviteList = new BehaviorSubject<IEvent[]>([]);
   $eventListError = new BehaviorSubject<string | null>(null);
@@ -80,8 +80,21 @@ export class EventsService implements OnDestroy {
     this.saveUser(user);
   }
 
-  updateEventForUser(id: string, form: IEvent) {
-    console.log("edit clicked", id, form);
+  updateEventForUser(event: IEvent, form: IEvent) {
+    console.log("edit clicked", event, form);
+
+    const user = this.user;
+
+    const eventValue = user.eventList.find(eventItem => eventItem.id === event.id);
+    if (!eventValue) {
+      return;
+    }
+
+    eventValue.dp = form.dp;
+    eventValue.name = form.name;
+    eventValue.description = form.description;
+
+    this.saveUser(user);
   }
 
   saveUser(user: IUser) {
@@ -93,6 +106,24 @@ export class EventsService implements OnDestroy {
         console.error(err);
       }
     })
+
+    this.sort(user);
+  }
+
+  sort(user: IUser) {
+    const mapEvents = user.eventList.map((obj) => {
+      return {...obj, dp: new Date(obj.dp)};
+    })
+    const sortedAscEvents = mapEvents.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
+
+    this.$eventList.next(sortedAscEvents);
+
+    const mapInvites = user.inviteList.map((obj) => {
+      return {...obj, dp: new Date(obj.dp)};
+    })
+    const sortedAscInvites = mapInvites.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
+
+    this.$eventInviteList.next(sortedAscInvites);
   }
 
   // onSearchTextChange(searchText: string) {

@@ -11,7 +11,6 @@ import {ModalCreateEventComponent} from "../modal-create-event/modal-create-even
 })
 export class EventListComponent implements OnDestroy {
 
-  closeResult = '';
   eventList: IEvent[] = [];
   eventInviteList: IEvent[] = [];
   errorMessage: string | null = null;
@@ -28,9 +27,6 @@ export class EventListComponent implements OnDestroy {
     this.eventsService.$eventListError.pipe(takeUntil(this.onDestroy)).subscribe(
       message => this.errorMessage = message
     );
-
-    console.log(this.eventList);
-
   }
 
   ngOnDestroy(): void {

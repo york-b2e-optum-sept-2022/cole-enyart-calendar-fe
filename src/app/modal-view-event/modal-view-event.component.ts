@@ -35,8 +35,8 @@ export class ModalViewEventComponent implements OnDestroy {
     this.isEditing = false;
   }
 
-  onSaveEventClick(id: string, form: NgForm) {
-    this.eventsService.updateEventForUser(id, form.value as IEvent);
+  onSaveEventClick(event: IEvent, form: NgForm) {
+    this.eventsService.updateEventForUser(event, form.value as IEvent);
   }
 
   onDeleteEventClick(event: IEvent) {
