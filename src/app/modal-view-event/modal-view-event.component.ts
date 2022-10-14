@@ -39,8 +39,8 @@ export class ModalViewEventComponent implements OnDestroy {
     this.eventsService.updateEventForUser(id, form.value as IEvent);
   }
 
-  onDeleteEventClick(id : string) {
-    this.eventsService.removeEventFromUser(id);
+  onDeleteEventClick(event: IEvent) {
+    this.eventsService.removeEventFromUser(event);
   }
 
 }

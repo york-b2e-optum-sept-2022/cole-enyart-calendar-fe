@@ -67,8 +67,17 @@ export class EventsService implements OnDestroy {
     }
   }
 
-  removeEventFromUser(id: string) {
-    console.log("remove clicked", id);
+  removeEventFromUser(event: IEvent) {
+    console.log("remove clicked", event);
+
+    const user = this.user;
+
+    const eventIndex = user.eventList.findIndex(eventItem => eventItem.id === event.id);
+
+    user.eventList.splice(eventIndex, 1);
+    console.log(user.eventList);
+
+    this.saveUser(user);
   }
 
   updateEventForUser(id: string, form: IEvent) {
