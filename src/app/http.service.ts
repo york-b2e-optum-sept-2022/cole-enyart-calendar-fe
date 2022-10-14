@@ -24,7 +24,7 @@ export class HttpService {
     ) as Observable<IUser>;
   }
 
-  createEvent(user: IUser) {
+  updateUser(user: IUser) {
     return this.httpClient.put(
       'http://localhost:3000/users/' + user.id,
       user

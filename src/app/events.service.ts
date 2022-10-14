@@ -15,13 +15,7 @@ export class EventsService implements OnDestroy {
   user!: IUser;
   $user = new Subject<IUser[]>();
   // $user = new BehaviorSubject<IUser | null>( null);
-  event!: IEvent;
-  $event = new Subject<IEvent>();
-  // $event = new BehaviorSubject<IEvent>({
-  //   id: "",
-  //   dp: new Date(),
-  //   name: "",
-  //   description: ""});
+  $event = new BehaviorSubject<IEvent | null>( null);
   $eventList = new BehaviorSubject<IEvent[]>([]);
   $eventInviteList = new BehaviorSubject<IEvent[]>([]);
   $eventListError = new BehaviorSubject<string | null>(null);
@@ -64,7 +58,25 @@ export class EventsService implements OnDestroy {
       inviteList: this.user.inviteList,
     }
 
-    this.httpService.createEvent(user).pipe(first()).subscribe({
+    this.saveUser(user);
+  }
+
+  viewEvent(event: IEvent) {
+    if (this.$event !== null) {
+      this.$event.next(event);
+    }
+  }
+
+  removeEventFromUser(id: string) {
+    console.log("remove clicked", id);
+  }
+
+  updateEventForUser(id: string, form: IEvent) {
+    console.log("edit clicked", id, form);
+  }
+
+  saveUser(user: IUser) {
+    this.httpService.updateUser(user).pipe(first()).subscribe({
       next: (user) => {
         this.$user.next(user);
       },
@@ -72,18 +84,6 @@ export class EventsService implements OnDestroy {
         console.error(err);
       }
     })
-  }
-
-  viewEvent(event: IEvent) {
-    this.event = event;
-    console.log(this.event);
-
-    this.$event.next(this.event);
-    console.log(this.$event);
-  }
-
-  removeEventFromUser(event: IEvent) {
-    console.log("remove clicked", event);
   }
 
   // onSearchTextChange(searchText: string) {

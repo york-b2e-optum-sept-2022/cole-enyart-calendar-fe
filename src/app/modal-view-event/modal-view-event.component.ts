@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {NgbActiveModal, NgbDateAdapter, NgbDateNativeAdapter} from "@ng-bootstrap/ng-bootstrap";
 import {EventsService} from "../events.service";
 import {IEvent} from "../_interfaces/IEvent";
@@ -7,11 +7,13 @@ import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-modal-view-event',
-  templateUrl: './modal-view-event.component.html'
+  templateUrl: './modal-view-event.component.html',
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 export class ModalViewEventComponent implements OnDestroy {
 
-  event!: IEvent;
+  event: IEvent | null = null;
+  isEditing: boolean = false;
   onDestroy = new Subject();
 
   constructor(public activeModal: NgbActiveModal, private eventsService: EventsService) {
@@ -25,9 +27,20 @@ export class ModalViewEventComponent implements OnDestroy {
     this.onDestroy.complete();
   }
 
-  onDeleteEventClick(form: NgForm) {
-    this.eventsService.removeEventFromUser(form.value as IEvent);
-    console.log(this.event);
+  onEditEventClick() {
+    this.isEditing = true;
+  }
+
+  onBackEventClick() {
+    this.isEditing = false;
+  }
+
+  onSaveEventClick(id: string, form: NgForm) {
+    this.eventsService.updateEventForUser(id, form.value as IEvent);
+  }
+
+  onDeleteEventClick(id : string) {
+    this.eventsService.removeEventFromUser(id);
   }
 
 }
