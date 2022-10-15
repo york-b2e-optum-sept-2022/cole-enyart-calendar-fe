@@ -12,6 +12,8 @@ import { EventListComponent } from './event-list/event-list.component';
 import { EventComponent } from './event/event.component';
 import { ModalCreateEventComponent } from './modal-create-event/modal-create-event.component';
 import { ModalViewEventComponent } from './modal-view-event/modal-view-event.component';
+import { InviteComponent } from './invite/invite.component';
+import { ModalViewInviteComponent } from './modal-view-invite/modal-view-invite.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ModalViewEventComponent } from './modal-view-event/modal-view-event.com
     EventComponent,
     ModalCreateEventComponent,
     ModalViewEventComponent,
+    InviteComponent,
+    ModalViewInviteComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,15 +1,17 @@
 <div *ngIf="event">
+  <div class="modal-header">
+    <h4 class="modal-title">{{event.name}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+
   <div *ngIf="!isEditing">
-    <div class="modal-header">
-      <h4 class="modal-title">{{event.name}}</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-    </div>
     <div class="modal-body">
       <div>{{event.dp | date}}</div>
       <div>{{event.name}}</div>
       <div>{{event.description}}</div>
       <div>{{event.invite}}</div>
     </div>
+
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-primary m-1" (click)="onEditEventClick()">Edit</button>
       <button type="button" class="btn btn-outline-danger m-1"
@@ -27,10 +29,6 @@
   </div>
 
   <div *ngIf="isEditing">
-    <div class="modal-header">
-      <h4 class="modal-title">{{event.name}}</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-    </div>
     <div class="modal-body">
       <form #form="ngForm" class="text-center w-50">
 
@@ -46,12 +44,10 @@
             </svg>
           </button>
         </div>
-
         <div class="form-floating mb-3">
           <input name="name" ngModel="{{event.name}}" type="text" class="form-control" id="nameOfEvent">
           <label for="nameOfEvent">Name</label>
         </div>
-
         <div class="form-floating mb-3">
           <input name="description" ngModel="{{event.description}}" type="text" class="form-control"
                  id="DescriptionOfEvent">
@@ -61,13 +57,11 @@
           <input name="invite" ngModel="{{event.invite}}" type="text" class="form-control" id="inviteEmail">
           <label for="inviteEmail">Invite</label>
         </div>
-
       </form>
     </div>
+
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-primary m-1" (click)="onBackEventClick()">
-        Go Back
-      </button>
+      <button type="button" class="btn btn-outline-primary m-1" (click)="onBackEventClick()">Go Back</button>
       <button type="button" class="btn btn-outline-primary m-1"
               (click)="onSaveEventClick(event, form);
               activeModal.close('Close click')">

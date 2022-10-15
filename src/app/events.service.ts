@@ -69,7 +69,6 @@ export class EventsService implements OnDestroy {
     this.httpService.findUsersByEmail(form.invite).pipe(first()).subscribe({
       next: (userList) => {
 
-        // validate password
         const foundAccount = userList.find(
           account => account.email === form.invite
         );
@@ -121,9 +120,12 @@ export class EventsService implements OnDestroy {
     const user = this.user;
 
     const eventIndex = user.eventList.findIndex(eventItem => eventItem.id === event.id);
+    const inviteIndex = user.inviteList.findIndex(eventItem => eventItem.id === event.id);
 
     user.eventList.splice(eventIndex, 1);
+    user.inviteList.splice(inviteIndex, 1);
     console.log(user.eventList);
+    console.log(user.inviteList);
 
     this.saveUser(user);
   }

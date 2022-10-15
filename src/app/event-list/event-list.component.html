@@ -5,15 +5,15 @@
     <app-event
       *ngFor="let event of eventList"
       [event]="event"
-      class="w-25 p-2 d-flex"
+      class="w-25 p-2 d-flex events"
     ></app-event>
   </div>
 
   <div class="w-50 p-2"> Invites
-    <app-event
+    <app-invite
       *ngFor="let invite of eventInviteList"
       [event]="invite"
-      class="w-25 p-2 d-flex"
-    ></app-event>
+      class="w-25 p-2 d-flex invites"
+    ></app-invite>
   </div>
 </div>

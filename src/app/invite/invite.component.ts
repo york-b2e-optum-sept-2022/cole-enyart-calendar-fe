@@ -1,14 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {IEvent} from "../_interfaces/IEvent";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ModalViewEventComponent} from "../modal-view-event/modal-view-event.component";
 import {EventsService} from "../events.service";
+import {ModalViewInviteComponent} from "../modal-view-invite/modal-view-invite.component";
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html'
+  selector: 'app-invite',
+  templateUrl: './invite.component.html'
 })
-export class EventComponent {
+export class InviteComponent {
 
   @Input() event!: IEvent;
 
@@ -18,7 +18,7 @@ export class EventComponent {
 
   onViewEventClick() {
     this.eventsService.viewEvent(this.event);
-    this.modalService.open(ModalViewEventComponent);
+    this.modalService.open(ModalViewInviteComponent);
   }
 
 }
