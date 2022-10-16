@@ -6,8 +6,38 @@
       "firstName": "Test",
       "lastName": "Tester",
       "password": "123",
-      "eventList": [],
-      "inviteList": []
+      "eventList": [
+        {
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com",
+          "id": "6e9f16c4-d156-4f3e-889c-863c60cef739",
+          "dp": "2022-10-14T05:00:00.000Z"
+        },
+        {
+          "name": "happy",
+          "description": "gooooooo",
+          "invite": "john@smith.com",
+          "id": "41b1b948-3ad6-4767-8c82-d85e8f9fb467",
+          "dp": "2022-10-31T05:00:00.000Z"
+        },
+        {
+          "dp": "2022-10-20T05:00:00.000Z",
+          "name": "rawr",
+          "description": "rawr",
+          "invite": "john@smith.com",
+          "id": "d6d3ad5c-9c4f-4b97-98c2-ea71c31c7995"
+        }
+      ],
+      "inviteList": [
+        {
+          "dp": "2022-10-15T17:00:00.000Z",
+          "name": "rawr",
+          "description": "cat",
+          "invite": "test@test.com",
+          "id": "0ed761ac-445b-4718-b1a5-bed675eb1d3f"
+        }
+      ]
     },
     {
       "id": "c97bfbee-ffd1-494f-b2aa-1fa3d1c55746",
@@ -15,8 +45,23 @@
       "firstName": "john",
       "lastName": "smith",
       "password": "12345",
-      "eventList": [],
-      "inviteList": []
+      "eventList": [
+        {
+          "dp": "2022-10-15T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "",
+          "id": "8a39fdb8-4f15-4aed-8fda-ce57f9312d77"
+        }
+      ],
+      "inviteList": [
+        {
+          "dp": "2022-10-20T05:00:00.000Z",
+          "name": "rawr",
+          "description": "rawr",
+          "invite": "john@smith.com"
+        }
+      ]
     }
   ]
 }

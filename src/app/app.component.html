@@ -6,5 +6,6 @@
 </ng-container>
 
 <ng-container *ngIf="isLoggedIn">
-  <app-event-list>></app-event-list>
+  <app-event-list *ngIf="!test">></app-event-list>
+  <app-test *ngIf="test"></app-test>
 </ng-container>

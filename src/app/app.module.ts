@@ -14,6 +14,7 @@ import { ModalCreateEventComponent } from './modal-create-event/modal-create-eve
 import { ModalViewEventComponent } from './modal-view-event/modal-view-event.component';
 import { InviteComponent } from './invite/invite.component';
 import { ModalViewInviteComponent } from './modal-view-invite/modal-view-invite.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ModalViewInviteComponent } from './modal-view-invite/modal-view-invite.
     ModalViewEventComponent,
     InviteComponent,
     ModalViewInviteComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,

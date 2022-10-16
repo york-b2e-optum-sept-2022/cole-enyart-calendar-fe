@@ -14,12 +14,13 @@ export class EventsService implements OnDestroy {
   _eventList: IUser[] = [];
   user!: IUser;
   $user = new Subject<IUser[]>();
-  // $user = new BehaviorSubject<IUser | null>( null);
-  $event = new BehaviorSubject<IEvent | null>(null);
-  $eventList = new BehaviorSubject<IEvent[]>([]);
 
-  $inviteUser = new BehaviorSubject<IUser[] | null>(null);
-  $eventInviteList = new BehaviorSubject<IEvent[]>([]);
+  $test = new BehaviorSubject<boolean>( false);
+
+  $eventList = new BehaviorSubject<IEvent[]>([]);
+  $inviteList = new BehaviorSubject<IEvent[]>([]);
+  $event = new BehaviorSubject<IEvent | null>(null);
+
   $eventListError = new BehaviorSubject<string | null>(null);
 
   private readonly EVENT_LIST_HTTP_ERROR = 'Unable to get the list of events, please try again later';
@@ -27,17 +28,15 @@ export class EventsService implements OnDestroy {
   onDestroy = new Subject();
 
   constructor(private httpService: HttpService, private userService: UserService) {
-
     this.userService.$user.pipe(takeUntil(this.onDestroy)).subscribe((user) => {
       if (user === null) {
         return;
       }
       this.user = user;
       this.$eventList.next(user.eventList);
-      this.$eventInviteList.next(user.inviteList);
+      this.$inviteList.next(user.inviteList);
       this.sort(user);
     })
-
   }
 
   ngOnDestroy(): void {
@@ -46,7 +45,7 @@ export class EventsService implements OnDestroy {
   }
 
   addEventToUser(form: IEvent) {
-    console.log("add clicked", form);
+    console.log("addEventToUser:", form);
 
     const event = this.$eventList.getValue();
     form.id = uuidv4();
@@ -66,6 +65,7 @@ export class EventsService implements OnDestroy {
   }
 
   addInviteToUser(form: IEvent) {
+    console.log("addInviteToUser:", form);
     this.httpService.findUsersByEmail(form.invite).pipe(first()).subscribe({
       next: (userList) => {
 
@@ -80,7 +80,7 @@ export class EventsService implements OnDestroy {
         const invite = foundAccount.inviteList;
         invite.push(form);
 
-        const user: IUser = {
+        const invitee: IUser = {
           id: foundAccount.id,
           email: foundAccount.email,
           firstName: foundAccount.firstName,
@@ -90,16 +90,18 @@ export class EventsService implements OnDestroy {
           inviteList: invite,
         }
 
-        this.httpService.updateUser(user).pipe(first()).subscribe({
-          next: (user) => {
-            this.$inviteUser.next(user);
+        this.httpService.updateUser(invitee).pipe(first()).subscribe({
+          next: (invitee) => {
+            console.log("httpService.updateUser:", invitee);
+            console.log("user:", this.user);
+            console.log("$eventList:", this.$eventList.getValue());
+            console.log("$inviteList:", this.$inviteList.getValue());
+            this.$user.next([this.user]);
           },
           error: (err) => {
             console.error(err);
           }
-        })
-
-        this.sort(user);
+        });
       },
       error: (err) => {
         console.error(err);
@@ -115,7 +117,7 @@ export class EventsService implements OnDestroy {
   }
 
   removeEventFromUser(event: IEvent) {
-    console.log("remove clicked", event);
+    console.log("removeEventFromUser:", event);
 
     const user = this.user;
 
@@ -124,14 +126,14 @@ export class EventsService implements OnDestroy {
 
     user.eventList.splice(eventIndex, 1);
     user.inviteList.splice(inviteIndex, 1);
-    console.log(user.eventList);
-    console.log(user.inviteList);
+    console.log("eventList:", user.eventList);
+    console.log("inviteList:",user.inviteList);
 
     this.saveUser(user);
   }
 
   updateEventForUser(oldEvent: IEvent, newEvent: IEvent) {
-    console.log("edit clicked", oldEvent, newEvent);
+    console.log("updateEventForUser:", "old:", oldEvent, "new:", newEvent);
 
     const user = this.user;
 
@@ -146,6 +148,7 @@ export class EventsService implements OnDestroy {
     eventValue.invite = newEvent.invite;
 
     this.saveUser(user);
+    this.addInviteToUser(newEvent);
   }
 
   saveUser(user: IUser) {
@@ -174,7 +177,7 @@ export class EventsService implements OnDestroy {
     })
     const sortedAscInvites = mapInvites.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
 
-    this.$eventInviteList.next(sortedAscInvites);
+    this.$inviteList.next(sortedAscInvites);
   }
 
   // onSearchTextChange(searchText: string) {

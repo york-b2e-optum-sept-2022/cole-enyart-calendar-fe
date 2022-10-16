@@ -12,7 +12,7 @@ import {ModalCreateEventComponent} from "../modal-create-event/modal-create-even
 export class EventListComponent implements OnDestroy {
 
   eventList: IEvent[] = [];
-  eventInviteList: IEvent[] = [];
+  inviteList: IEvent[] = [];
   errorMessage: string | null = null;
 
   onDestroy = new Subject();
@@ -21,8 +21,8 @@ export class EventListComponent implements OnDestroy {
     this.eventsService.$eventList.pipe(takeUntil(this.onDestroy)).subscribe(
       eventList => this.eventList = eventList
     );
-    this.eventsService.$eventInviteList.pipe(takeUntil(this.onDestroy)).subscribe(
-      eventInviteList => this.eventInviteList = eventInviteList
+    this.eventsService.$inviteList.pipe(takeUntil(this.onDestroy)).subscribe(
+      eventInviteList => this.inviteList = eventInviteList
     );
     this.eventsService.$eventListError.pipe(takeUntil(this.onDestroy)).subscribe(
       message => this.errorMessage = message

@@ -18,6 +18,7 @@
 
     <div *ngIf="user" class="d-flex flex-row align-items-center">
       <div class="fs-4 text-light">Welcome, {{user.firstName}}</div>
+      <button (click)="onTestClick()" class="btn btn-outline-light m-3">Test</button>
       <button (click)="onLogoutClick()" class="btn btn-outline-light m-3">Logout</button>
     </div>
 

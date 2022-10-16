@@ -33,7 +33,7 @@
       <form #form="ngForm" class="text-center w-50">
 
         <div class="form-floating mb-3 d-flex">
-          <input id="dateOfEvent" class="form-control" name="dp" placeholder="{{event.dp | date}}" ngModel ngbDatepicker
+          <input id="dateOfEvent" class="form-control" name="dp" [(ngModel)]="date" ngbDatepicker
                  #dp="ngbDatepicker">
           <label for="dateOfEvent">Date</label>
           <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button">

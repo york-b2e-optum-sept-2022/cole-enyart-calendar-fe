@@ -44,6 +44,7 @@ export class UserService {
 
   logout() {
     this.$user.next(null);
+    console.log("logout:", this.$user.getValue());
   }
 
   login(form: ILoginForm) {
@@ -71,7 +72,7 @@ export class UserService {
 
         // login
         this.$user.next(foundAccount);
-        console.log(this.$user.getValue());
+        console.log("login:", this.$user.getValue());
       },
       error: (err) => {
         console.error(err);

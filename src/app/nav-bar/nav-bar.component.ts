@@ -2,6 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {IUser} from "../_interfaces/IUser";
 import {Subject, takeUntil} from "rxjs";
 import {UserService} from "../user.service";
+import {EventsService} from "../events.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,19 +16,10 @@ export class NavBarComponent implements OnDestroy {
 
   onDestroy = new Subject();
 
-  constructor(
-    private userService: UserService,
-  ) {
-    this.userService.$user
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(user => {
-        this.user = user
-      })
-    this.userService.$user
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe(invite => {
-        this.inviteCount = invite?.inviteList?.length ?? null
-      });
+  constructor(private userService: UserService, private eventsService: EventsService) {
+    this.userService.$user.pipe(takeUntil(this.onDestroy)).subscribe(user => {
+      this.user = user
+    })
   }
 
   ngOnDestroy(): void {
@@ -35,6 +27,9 @@ export class NavBarComponent implements OnDestroy {
     this.onDestroy.complete();
   }
 
+  onTestClick() {
+    this.eventsService.$test.next(true);
+  }
   onLogoutClick() {
     this.userService.logout();
   }
