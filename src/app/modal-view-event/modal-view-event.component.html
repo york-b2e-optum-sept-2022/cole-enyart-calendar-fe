@@ -38,7 +38,7 @@
 
   <div *ngIf="isEditing">
     <div class="modal-body d-flex justify-content-center border-dark">
-      <form #form="ngForm" class="text-center w-50">
+      <form #newEvent="ngForm" class="text-center w-50">
 
         <div class="form-floating mb-3 d-flex">
           <input name="dp" [(ngModel)]="date" ngbDatepicker class="form-control" id="dateOfEvent" #dp="ngbDatepicker">
@@ -71,8 +71,7 @@
       <p class="text-danger bg-dark rounded-2 p-2">{{viewEventErrorMessage}}</p>
       <button type="button" class="btn btn-info btn-outline-dark m-1" (click)="onBackEventClick()">Go Back</button>
       <button type="button" class="btn btn-success btn-outline-dark m-1"
-              (click)="onSaveEventClick(event, form);
-              activeModal.close('Close click')">
+              (click)="onSaveEventClick(event, newEvent)">
         Save
       </button>
     </div>

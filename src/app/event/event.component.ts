@@ -19,6 +19,7 @@ export class EventComponent {
   onViewEventClick() {
     this.eventsService.viewEvent(this.event);
     this.modalService.open(ModalViewEventComponent);
+    this.eventsService.$eventError.next(null);
   }
 
 }

@@ -5,6 +5,8 @@
       <div class="navbar-brand fs-3 text-light m-3">Calendar</div>
     </div>
 
+    <p class="d-flex align-items-center text-danger bg-dark rounded-2 p-2">{{unknownErrorMessage}}</p>
+
     <div *ngIf="user" class="d-flex flex-row align-items-center">
       <div class="fs-4 text-light">Welcome, {{user.firstName}}</div>
       <button (click)="onLogoutClick()" class="btn btn-danger btn-outline-dark m-3">Logout</button>

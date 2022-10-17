@@ -19,6 +19,7 @@ export class InviteComponent {
   onViewEventClick() {
     this.eventsService.viewEvent(this.event);
     this.modalService.open(ModalViewInviteComponent);
+    this.eventsService.$eventError.next(null);
   }
 
 }

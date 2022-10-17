@@ -47,9 +47,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 export class ModalViewEventComponent implements OnDestroy {
 
   date!: string;
-
   event: IEvent | null = null;
   isEditing: boolean = false;
+  closeModal: boolean = false;
   viewEventErrorMessage: string | null = null;
   onDestroy = new Subject();
 
@@ -72,9 +72,19 @@ export class ModalViewEventComponent implements OnDestroy {
     )
 
     this.eventsService
-      .$createEventError
+      .$eventError
       .pipe(takeUntil(this.onDestroy))
       .subscribe(message => this.viewEventErrorMessage = message);
+
+    this.eventsService
+      .$close
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(close => {
+        this.closeModal = close
+        if (this.closeModal) {
+          this.activeModal.close('Close click');
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -90,8 +100,8 @@ export class ModalViewEventComponent implements OnDestroy {
     this.isEditing = false;
   }
 
-  onSaveEventClick(event: IEvent, form: NgForm) {
-    this.eventsService.updateEventForUser(event, form.value as IEvent);
+  onSaveEventClick(event: IEvent, newEvent: NgForm) {
+    this.eventsService.updateEventForUser(event, newEvent.value as IEvent);
   }
 
   onDeleteEventClick(event: IEvent) {

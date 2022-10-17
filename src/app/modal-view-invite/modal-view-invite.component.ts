@@ -11,11 +11,16 @@ import {EventsService} from "../events.service";
 export class ModalViewInviteComponent implements OnDestroy {
 
   event: IEvent | null = null;
+  unknownErrorMessage: string | null = null;
   onDestroy = new Subject();
 
   constructor(public activeModal: NgbActiveModal, private eventsService: EventsService) {
     this.eventsService.$event.pipe(takeUntil(this.onDestroy)).subscribe(
       event => this.event = event
+    );
+
+    this.eventsService.$unknownError.pipe(takeUntil(this.onDestroy)).subscribe(
+      message => this.unknownErrorMessage = message
     );
   }
 

@@ -13,24 +13,28 @@ export class EventsService implements OnDestroy {
 
   user!: IUser;
   $user = new Subject<IUser[]>();
-
-  $close = new BehaviorSubject<boolean>(false);
-
+  $event = new BehaviorSubject<IEvent | null>(null);
   $eventList = new BehaviorSubject<IEvent[]>([]);
   $inviteList = new BehaviorSubject<IEvent[]>([]);
-  $event = new BehaviorSubject<IEvent | null>(null);
+  $close = new BehaviorSubject<boolean>(false);
 
-  $eventListError = new BehaviorSubject<string | null>(null);
+  $eventError = new BehaviorSubject<string | null>(null);
+  $unknownError = new BehaviorSubject<string | null>(null);
 
-  $createEventError = new BehaviorSubject<string | null>(null);
+  private readonly ISO_INVALID_DATE = "invalid date, must be mm/dd/yyyy";
+  private readonly EVENT_INVALID_NAME = 'You must provide a valid name';
+  private readonly EVENT_INVALID_DESC = 'You must provide a valid description';
+  private readonly EVENT_INVALID_INVITE = 'You must provide a valid invite email';
+  private readonly EVENT_INVALID_SELF = 'You cannot invite yourself to an Event';
 
-  private readonly EVENT_LIST_HTTP_ERROR = 'Unable to get the list of events, please try again later';
+  private readonly HTTP_FIND_EMAIL = 'Unable to locate invitee email, please try again';
+  private readonly HTTP_ADD_INVITE = 'Unable to add invite to invited user, please try again';
+  private readonly HTTP_ADD_USER = 'Unable to update user, please try again';
+  private readonly FIND_ID = 'Unable to find the id, please try again';
+  private readonly USER = 'No user data, please try again';
+  private readonly EVENT = 'No event data, please try again';
+  private readonly EVENT_VIEW = 'Unable to load event, please try again';
 
-  private readonly CREATE_EVENT_INVALID_DATE = 'You must provide a valid date';
-  private readonly CREATE_EVENT_INVALID_NAME = 'You must provide a valid name';
-  private readonly CREATE_EVENT_INVALID_DESC = 'You must provide a valid description';
-  private readonly CREATE_EVENT_INVALID_INVITE = 'You must provide a valid invite email';
-  private readonly CREATE_EVENT_INVALID_SELF = 'You must cannot invite yourself to Event';
 
   onDestroy = new Subject();
 
@@ -40,6 +44,7 @@ export class EventsService implements OnDestroy {
         return;
       }
       this.user = user;
+      this.$user.next([this.user]);
       this.$eventList.next(user.eventList);
       this.$inviteList.next(user.inviteList);
       this.sort(this.user);
@@ -53,17 +58,25 @@ export class EventsService implements OnDestroy {
 
   addEventToUser(form: IEvent) {
     console.log("addEventToUser:", form, this.$close.getValue());
-
-    if (form.dp.valueOf() < 1) {
-      this.$createEventError.next(this.CREATE_EVENT_INVALID_DATE);
+    if (!form) {
+      console.error(form);
+      this.$unknownError.next(this.EVENT);
       return;
     }
+    try {
+      form.dp.toISOString()
+    } catch (error) {
+      console.error(error);
+      this.$eventError.next(this.ISO_INVALID_DATE);
+      return;
+    }
+
     if (form.name.length < 1) {
-      this.$createEventError.next(this.CREATE_EVENT_INVALID_NAME);
+      this.$eventError.next(this.EVENT_INVALID_NAME);
       return;
     }
     if (form.description.length < 1) {
-      this.$createEventError.next(this.CREATE_EVENT_INVALID_DESC);
+      this.$eventError.next(this.EVENT_INVALID_DESC);
       return;
     }
 
@@ -71,8 +84,20 @@ export class EventsService implements OnDestroy {
     form.id = uuidv4();
     event.push(form);
 
-    this.$eventList.next(this.user.eventList);
-    this.$inviteList.next(this.user.inviteList);
+    try {
+      this.$eventList.next(this.user.eventList);
+    } catch (error) {
+      console.error(error);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
+    try {
+      this.$inviteList.next(this.user.inviteList);
+    } catch (error) {
+      console.error(error);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
 
     const user: IUser = {
       id: this.user.id,
@@ -95,9 +120,19 @@ export class EventsService implements OnDestroy {
 
   findEmail(form: IEvent, user: IUser) {
     console.log("findEmail:", form.invite);
-
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
+    if (!form) {
+      console.error(form);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
     if (form.invite === this.user.email) {
-      this.$createEventError.next(this.CREATE_EVENT_INVALID_SELF);
+      console.error(form.invite === this.user.email);
+      this.$eventError.next(this.EVENT_INVALID_SELF);
       return;
     }
 
@@ -108,7 +143,8 @@ export class EventsService implements OnDestroy {
         );
         console.log(foundAccount);
         if (foundAccount === undefined) {
-          this.$createEventError.next(this.CREATE_EVENT_INVALID_INVITE);
+          console.error(foundAccount);
+          this.$eventError.next(this.EVENT_INVALID_INVITE);
           return;
         }
 
@@ -130,12 +166,19 @@ export class EventsService implements OnDestroy {
       },
       error: (err) => {
         console.error(err);
+        this.$unknownError.next(this.HTTP_FIND_EMAIL);
+        return;
       }
     });
   }
 
   addInviteToUser(invitee: IUser) {
     console.log("addInviteToUser:", invitee);
+    if (!invitee) {
+      console.error(invitee);
+      this.$unknownError.next(this.USER);
+      return;
+    }
 
     this.httpService.updateUser(invitee).pipe(first()).subscribe({
       next: () => {
@@ -143,6 +186,8 @@ export class EventsService implements OnDestroy {
       },
       error: (err) => {
         console.error(err);
+        this.$unknownError.next(this.HTTP_ADD_INVITE);
+        return;
       }
     });
 
@@ -152,31 +197,62 @@ export class EventsService implements OnDestroy {
 
   viewEvent(event: IEvent) {
     console.log("viewEvent:", event);
-    if (this.$event !== null) {
-      this.$event.next(event);
+    if (!event) {
+      console.error(event);
+      this.$unknownError.next(this.EVENT_VIEW);
+      return;
     }
+
+    this.$event.next(event);
   }
 
   removeEventFromUser(event: IEvent) {
     console.log("removeEventFromUser:", event);
+    if (!event) {
+      console.error(event);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
 
     const user = this.user;
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
 
     const eventIndex = user.eventList.findIndex(eventItem => eventItem.id === event.id);
-
+    if (eventIndex === -1) {
+      console.error(eventIndex);
+      this.$unknownError.next(this.FIND_ID);
+      return;
+    }
     user.eventList.splice(eventIndex, 1);
-    console.log("eventList:", user.eventList);
 
     this.saveUser(user);
   }
 
   removeInviteFromUser(event: IEvent) {
     console.log("removeInviteFromUser:", event);
+    if (!event) {
+      console.error(event);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
 
     const user = this.user;
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
 
     const inviteIndex = user.inviteList.findIndex(eventItem => eventItem.id === event.id);
-    console.log("inviteIndex:", inviteIndex);
+    if (inviteIndex === -1) {
+      console.error(inviteIndex);
+      this.$unknownError.next(this.FIND_ID);
+      return;
+    }
     user.inviteList.splice(inviteIndex, 1);
 
     this.saveUser(user);
@@ -184,11 +260,37 @@ export class EventsService implements OnDestroy {
 
   updateEventForUser(oldEvent: IEvent, newEvent: IEvent) {
     console.log("updateEventForUser:", "old:", oldEvent, "new:", newEvent);
+    if (!oldEvent) {
+      console.error(oldEvent);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
+    if (!newEvent) {
+      console.error(newEvent);
+      this.$unknownError.next(this.EVENT);
+      return;
+    }
+    try {
+      newEvent.dp.toISOString()
+    } catch (error) {
+      console.error(error);
+      this.$eventError.next(this.ISO_INVALID_DATE);
+      return;
+    }
 
     const user = this.user;
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
 
     const eventValue = user.eventList.find(eventItem => eventItem.id === oldEvent.id);
-    if (!eventValue) {
+    if (eventValue === undefined) {
+      console.error(eventValue);
+      console.log(oldEvent.id)
+      console.log(user)
+      this.$unknownError.next(this.FIND_ID);
       return;
     }
 
@@ -197,18 +299,30 @@ export class EventsService implements OnDestroy {
     eventValue.description = newEvent.description;
     eventValue.invite = newEvent.invite;
 
-    this.saveUser(user);
-    this.findEmail(newEvent, user);
+    if (newEvent.invite.length < 1) {
+      this.saveUser(user);
+      this.$close.next(true);
+    } else {
+      this.findEmail(eventValue, user);
+    }
   }
 
   saveUser(user: IUser) {
     console.log("saveUser:", user);
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
     this.httpService.updateUser(user).pipe(first()).subscribe({
       next: (user) => {
+        this.user = user[0];
         this.$user.next(user);
       },
       error: (err) => {
         console.error(err);
+        this.$unknownError.next(this.HTTP_ADD_USER);
+        return;
       }
     })
 
@@ -217,20 +331,26 @@ export class EventsService implements OnDestroy {
 
   sort(user: IUser) {
     console.log("sort:", user.eventList, user.inviteList);
+    if (!user) {
+      console.error(user);
+      this.$unknownError.next(this.USER);
+      return;
+    }
 
     const mapEvents = user.eventList.map((obj) => {
       return {...obj, dp: new Date(obj.dp)};
     })
 
     const sortedAscEvents = mapEvents.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
-
     this.$eventList.next(sortedAscEvents);
 
     const mapInvites = user.inviteList.map((obj) => {
       return {...obj, dp: new Date(obj.dp)};
     })
-    const sortedAscInvites = mapInvites.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
 
+    const sortedAscInvites = mapInvites.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
     this.$inviteList.next(sortedAscInvites);
+
+    this.$unknownError.next(null);
   }
 }

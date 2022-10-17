@@ -13,7 +13,6 @@ export class EventListComponent implements OnDestroy {
 
   eventList: IEvent[] = [];
   inviteList: IEvent[] = [];
-  errorMessage: string | null = null;
 
   onDestroy = new Subject();
 
@@ -24,9 +23,6 @@ export class EventListComponent implements OnDestroy {
     this.eventsService.$inviteList.pipe(takeUntil(this.onDestroy)).subscribe(
       eventInviteList => this.inviteList = eventInviteList
     );
-    this.eventsService.$eventListError.pipe(takeUntil(this.onDestroy)).subscribe(
-      message => this.errorMessage = message
-    );
   }
 
   ngOnDestroy(): void {
@@ -36,6 +32,7 @@ export class EventListComponent implements OnDestroy {
 
   openModal() {
     this.modalService.open(ModalCreateEventComponent);
+    this.eventsService.$eventError.next(null);
   }
 
 }

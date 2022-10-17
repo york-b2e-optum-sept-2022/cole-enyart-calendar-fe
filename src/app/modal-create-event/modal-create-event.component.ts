@@ -12,15 +12,20 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class ModalCreateEventComponent implements OnDestroy {
 
-  createEventErrorMessage: string | null = null;
   closeModal: boolean = false;
+  createEventErrorMessage: string | null = null;
+  unknownErrorMessage: string | null = null;
   onDestroy = new Subject();
 
   constructor(public activeModal: NgbActiveModal, private eventsService: EventsService) {
     this.eventsService
-      .$createEventError
+      .$eventError
       .pipe(takeUntil(this.onDestroy))
       .subscribe(message => this.createEventErrorMessage = message);
+
+    this.eventsService.$unknownError.pipe(takeUntil(this.onDestroy)).subscribe(
+      message => this.unknownErrorMessage = message
+    );
 
     this.eventsService
       .$close
@@ -40,10 +45,5 @@ export class ModalCreateEventComponent implements OnDestroy {
 
   onCreateEventClick(form: NgForm) {
     this.eventsService.addEventToUser(form.value as IEvent)
-
-    if (this.closeModal) {
-      this.eventsService.$close.next(false);
-      this.eventsService.$createEventError.next(null);
-    }
   }
 }
