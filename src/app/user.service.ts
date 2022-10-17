@@ -11,17 +11,7 @@ import {ILoginForm} from "./_interfaces/ILoginForm";
 })
 export class UserService {
 
-  $user = new BehaviorSubject<IUser | null>( null
-    // {
-    //   "id": "f48430e8-d20e-4735-838e-19a1583221c7",
-    //   "email": "test@test.com",
-    //   "firstName": "test",
-    //   "lastName": "tester",
-    //   "password": "123",
-    //   "eventList": [],
-    //   "inviteList": []
-    // }
-  );
+  $user = new BehaviorSubject<IUser | null>( null);
   $isRegistering = new BehaviorSubject<boolean>(false);
   $registrationError = new BehaviorSubject<string | null>(null);
   $loginError = new BehaviorSubject<string | null>(null);
@@ -40,6 +30,7 @@ export class UserService {
   private readonly REGISTER_HTTP_ERROR_MESSAGE = 'Unable to create your account, please try again later';
 
   constructor(private httpService: HttpService) {
+    console.log(this.$user.getValue());
   }
 
   logout() {
@@ -128,6 +119,7 @@ export class UserService {
         this.httpService.register(account).pipe(first()).subscribe({
           next: (account) => {
             this.$user.next(account);
+            console.log("register:", this.$user.getValue());
           },
           error: (err) => {
             console.error(err)

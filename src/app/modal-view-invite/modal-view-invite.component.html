@@ -1,18 +1,26 @@
-<div *ngIf="event">
-  <div class="modal-header">
-    <h4 class="modal-title">{{event.name}}</h4>
+<div *ngIf="event" class="bg-secondary">
+  <div class="modal-header border-dark">
+    <h4 class="modal-title bg-dark rounded-2 m-2 p-2 text-white">{{event.name}}</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
   </div>
 
-  <div class="modal-body">
-    <div>{{event.dp | date}}</div>
-    <div>{{event.name}}</div>
-    <div>{{event.description}}</div>
-    <div>{{event.invite}}</div>
+  <div class="modal-body border-dark d-flex">
+    <div class="m-2">
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">Date: </div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">Name: </div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">Description: </div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">Invited: </div>
+    </div>
+    <div class="m-2">
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">{{event.dp | date}}</div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">{{event.name}}</div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">{{event.description}}</div>
+      <div class="bg-dark rounded-2 m-2 p-2 text-white">{{event.invite}}</div>
+    </div>
   </div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger m-1"
+  <div class="modal-footer border-dark">
+    <button type="button" class="btn btn-danger btn-outline-dark m-1"
             (click)="onDeleteEventClick(event);
               activeModal.close('Close click')">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"

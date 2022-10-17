@@ -8,36 +8,35 @@
       "password": "123",
       "eventList": [
         {
+          "dp": "2022-10-01T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "",
+          "id": "94cd7d5b-4809-43db-8aaa-7f93255827e0"
+        },
+        {
+          "dp": "2022-10-02T17:00:00.000Z",
           "name": "the",
           "description": "cat",
           "invite": "john@smith.com",
-          "id": "6e9f16c4-d156-4f3e-889c-863c60cef739",
-          "dp": "2022-10-14T05:00:00.000Z"
+          "id": "cb4a86be-b1a0-4ad2-8c4f-2dee5abcafd9"
         },
         {
-          "name": "happy",
-          "description": "gooooooo",
-          "invite": "john@smith.com",
-          "id": "41b1b948-3ad6-4767-8c82-d85e8f9fb467",
-          "dp": "2022-10-31T05:00:00.000Z"
+          "dp": "2022-10-03T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "",
+          "id": "8226b917-497a-4cb2-a269-c3117a28ca45"
         },
         {
-          "dp": "2022-10-20T05:00:00.000Z",
+          "dp": "2022-10-08T17:00:00.000Z",
           "name": "rawr",
           "description": "rawr",
           "invite": "john@smith.com",
-          "id": "d6d3ad5c-9c4f-4b97-98c2-ea71c31c7995"
+          "id": "4e9d7b35-58ed-4c21-a744-976c66458e9f"
         }
       ],
-      "inviteList": [
-        {
-          "dp": "2022-10-15T17:00:00.000Z",
-          "name": "rawr",
-          "description": "cat",
-          "invite": "test@test.com",
-          "id": "0ed761ac-445b-4718-b1a5-bed675eb1d3f"
-        }
-      ]
+      "inviteList": []
     },
     {
       "id": "c97bfbee-ffd1-494f-b2aa-1fa3d1c55746",
@@ -45,21 +44,45 @@
       "firstName": "john",
       "lastName": "smith",
       "password": "12345",
-      "eventList": [
-        {
-          "dp": "2022-10-15T17:00:00.000Z",
-          "name": "the",
-          "description": "cat",
-          "invite": "",
-          "id": "8a39fdb8-4f15-4aed-8fda-ce57f9312d77"
-        }
-      ],
+      "eventList": [],
       "inviteList": [
         {
-          "dp": "2022-10-20T05:00:00.000Z",
+          "dp": "2022-10-04T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com",
+          "id": "1c940240-31be-4968-bb49-e3caae68560a"
+        },
+        {
+          "dp": "2022-10-03T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com"
+        },
+        {
+          "dp": "2022-10-01T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com"
+        },
+        {
+          "dp": "2022-10-02T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com"
+        },
+        {
+          "dp": "2022-10-02T17:00:00.000Z",
+          "name": "the",
+          "description": "cat",
+          "invite": "john@smith.com"
+        },
+        {
+          "dp": "2022-10-08T17:00:00.000Z",
           "name": "rawr",
           "description": "rawr",
-          "invite": "john@smith.com"
+          "invite": "john@smith.com",
+          "id": "4e9d7b35-58ed-4c21-a744-976c66458e9f"
         }
       ]
     }

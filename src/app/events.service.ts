@@ -11,11 +11,10 @@ import {v4 as uuidv4} from "uuid";
 })
 export class EventsService implements OnDestroy {
 
-  _eventList: IUser[] = [];
   user!: IUser;
   $user = new Subject<IUser[]>();
 
-  $test = new BehaviorSubject<boolean>( false);
+  $close = new BehaviorSubject<boolean>(false);
 
   $eventList = new BehaviorSubject<IEvent[]>([]);
   $inviteList = new BehaviorSubject<IEvent[]>([]);
@@ -23,7 +22,15 @@ export class EventsService implements OnDestroy {
 
   $eventListError = new BehaviorSubject<string | null>(null);
 
+  $createEventError = new BehaviorSubject<string | null>(null);
+
   private readonly EVENT_LIST_HTTP_ERROR = 'Unable to get the list of events, please try again later';
+
+  private readonly CREATE_EVENT_INVALID_DATE = 'You must provide a valid date';
+  private readonly CREATE_EVENT_INVALID_NAME = 'You must provide a valid name';
+  private readonly CREATE_EVENT_INVALID_DESC = 'You must provide a valid description';
+  private readonly CREATE_EVENT_INVALID_INVITE = 'You must provide a valid invite email';
+  private readonly CREATE_EVENT_INVALID_SELF = 'You must cannot invite yourself to Event';
 
   onDestroy = new Subject();
 
@@ -35,7 +42,7 @@ export class EventsService implements OnDestroy {
       this.user = user;
       this.$eventList.next(user.eventList);
       this.$inviteList.next(user.inviteList);
-      this.sort(user);
+      this.sort(this.user);
     })
   }
 
@@ -45,11 +52,27 @@ export class EventsService implements OnDestroy {
   }
 
   addEventToUser(form: IEvent) {
-    console.log("addEventToUser:", form);
+    console.log("addEventToUser:", form, this.$close.getValue());
+
+    if (form.dp.valueOf() < 1) {
+      this.$createEventError.next(this.CREATE_EVENT_INVALID_DATE);
+      return;
+    }
+    if (form.name.length < 1) {
+      this.$createEventError.next(this.CREATE_EVENT_INVALID_NAME);
+      return;
+    }
+    if (form.description.length < 1) {
+      this.$createEventError.next(this.CREATE_EVENT_INVALID_DESC);
+      return;
+    }
 
     const event = this.$eventList.getValue();
     form.id = uuidv4();
     event.push(form);
+
+    this.$eventList.next(this.user.eventList);
+    this.$inviteList.next(this.user.inviteList);
 
     const user: IUser = {
       id: this.user.id,
@@ -59,21 +82,33 @@ export class EventsService implements OnDestroy {
       password: this.user.password,
       eventList: event,
       inviteList: this.user.inviteList,
+    };
+
+    if (form.invite.length < 1) {
+      this.saveUser(user);
+      this.$close.next(true);
+    } else {
+      this.findEmail(form, user);
     }
 
-    this.saveUser(user);
   }
 
-  addInviteToUser(form: IEvent) {
-    console.log("addInviteToUser:", form);
+  findEmail(form: IEvent, user: IUser) {
+    console.log("findEmail:", form.invite);
+
+    if (form.invite === this.user.email) {
+      this.$createEventError.next(this.CREATE_EVENT_INVALID_SELF);
+      return;
+    }
+
     this.httpService.findUsersByEmail(form.invite).pipe(first()).subscribe({
       next: (userList) => {
-
         const foundAccount = userList.find(
           account => account.email === form.invite
         );
-        if (!foundAccount) {
-          // this.$loginError.next(this.LOGIN_INVALID_CREDENTIALS);
+        console.log(foundAccount);
+        if (foundAccount === undefined) {
+          this.$createEventError.next(this.CREATE_EVENT_INVALID_INVITE);
           return;
         }
 
@@ -90,27 +125,33 @@ export class EventsService implements OnDestroy {
           inviteList: invite,
         }
 
-        this.httpService.updateUser(invitee).pipe(first()).subscribe({
-          next: (invitee) => {
-            console.log("httpService.updateUser:", invitee);
-            console.log("user:", this.user);
-            console.log("$eventList:", this.$eventList.getValue());
-            console.log("$inviteList:", this.$inviteList.getValue());
-            this.$user.next([this.user]);
-          },
-          error: (err) => {
-            console.error(err);
-          }
-        });
+        this.saveUser(user);
+        this.addInviteToUser(invitee);
       },
       error: (err) => {
         console.error(err);
-        // this.$loginError.next(this.LOGIN_HTTP_ERROR_MESSAGE)
       }
     });
   }
 
+  addInviteToUser(invitee: IUser) {
+    console.log("addInviteToUser:", invitee);
+
+    this.httpService.updateUser(invitee).pipe(first()).subscribe({
+      next: () => {
+        this.$user.next([this.user]);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
+    this.$close.next(true);
+  }
+
+
   viewEvent(event: IEvent) {
+    console.log("viewEvent:", event);
     if (this.$event !== null) {
       this.$event.next(event);
     }
@@ -122,12 +163,21 @@ export class EventsService implements OnDestroy {
     const user = this.user;
 
     const eventIndex = user.eventList.findIndex(eventItem => eventItem.id === event.id);
-    const inviteIndex = user.inviteList.findIndex(eventItem => eventItem.id === event.id);
 
     user.eventList.splice(eventIndex, 1);
-    user.inviteList.splice(inviteIndex, 1);
     console.log("eventList:", user.eventList);
-    console.log("inviteList:",user.inviteList);
+
+    this.saveUser(user);
+  }
+
+  removeInviteFromUser(event: IEvent) {
+    console.log("removeInviteFromUser:", event);
+
+    const user = this.user;
+
+    const inviteIndex = user.inviteList.findIndex(eventItem => eventItem.id === event.id);
+    console.log("inviteIndex:", inviteIndex);
+    user.inviteList.splice(inviteIndex, 1);
 
     this.saveUser(user);
   }
@@ -148,10 +198,11 @@ export class EventsService implements OnDestroy {
     eventValue.invite = newEvent.invite;
 
     this.saveUser(user);
-    this.addInviteToUser(newEvent);
+    this.findEmail(newEvent, user);
   }
 
   saveUser(user: IUser) {
+    console.log("saveUser:", user);
     this.httpService.updateUser(user).pipe(first()).subscribe({
       next: (user) => {
         this.$user.next(user);
@@ -165,9 +216,12 @@ export class EventsService implements OnDestroy {
   }
 
   sort(user: IUser) {
+    console.log("sort:", user.eventList, user.inviteList);
+
     const mapEvents = user.eventList.map((obj) => {
       return {...obj, dp: new Date(obj.dp)};
     })
+
     const sortedAscEvents = mapEvents.sort((objA, objB) => objA.dp.getTime() - objB.dp.getTime());
 
     this.$eventList.next(sortedAscEvents);
@@ -179,12 +233,4 @@ export class EventsService implements OnDestroy {
 
     this.$inviteList.next(sortedAscInvites);
   }
-
-  // onSearchTextChange(searchText: string) {
-  //   this.$eventList.next(
-  //     this._eventList.filter(event => event.name.toUpperCase().includes(searchText.toUpperCase()))
-  //   );
-  // }
-
-
 }

@@ -1,9 +1,9 @@
-<div class="d-flex justify-content-center mt-5">
+<div class="d-flex justify-content-center bg-secondary min-vh-100">
 
-  <form #form="ngForm" (ngSubmit)="onRegisterClick(form)" class="text-center">
+  <form #form="ngForm" (ngSubmit)="onRegisterClick(form)" class="text-center w-25 mt-5">
 
-    <h3 class="mb-3">Register</h3>
-    <p class="text-danger">{{errorMessage}}</p>
+    <h3 class="mb-3 bg-dark rounded-2 m-2 p-2 text-white">Register</h3>
+    <p class="text-danger bg-dark rounded-2 p-2">{{errorMessage}}</p>
 
     <div class="form-floating mb-3">
       <input name="email" ngModel type="email" class="form-control" id="username-input">
@@ -35,8 +35,8 @@
     </div>
 
     <div class="d-flex justify-content-around">
-      <button type="button" (click)="onLoginClick()" class="btn btn-outline-primary">Have Account?</button>
-      <button type="submit" class="btn btn-outline-primary">Register</button>
+      <button type="button" (click)="onLoginClick()" class="btn btn-info btn-outline-dark">Have Account?</button>
+      <button type="submit" class="btn btn-success btn-outline-dark">Register</button>
     </div>
   </form>
 </div>

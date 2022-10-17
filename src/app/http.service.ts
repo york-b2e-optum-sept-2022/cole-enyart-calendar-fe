@@ -31,4 +31,10 @@ export class HttpService {
     ) as Observable<IUser[]>
   }
 
+  getUserById(user: IUser) {
+    return this.httpClient.get(
+      'http://localhost:3000/users?id=' + user.id,
+    ) as Observable<IUser>;
+  }
+
 }

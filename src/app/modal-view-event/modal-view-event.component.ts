@@ -1,7 +1,7 @@
 import {Component, Injectable, OnDestroy} from '@angular/core';
 import {
   NgbActiveModal,
-  NgbDateAdapter,
+  NgbDateAdapter, NgbDateNativeAdapter,
   NgbDateParserFormatter,
   NgbDateStruct
 } from "@ng-bootstrap/ng-bootstrap";
@@ -9,24 +9,6 @@ import {EventsService} from "../events.service";
 import {IEvent} from "../_interfaces/IEvent";
 import {NgForm} from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
-
-@Injectable()
-export class CustomAdapter extends NgbDateAdapter<Date> {
-  fromModel(value: Date | null): NgbDateStruct | null {
-    if (value) {
-      return {
-        year: value.getFullYear(),
-        month: value.getMonth() + 1,
-        day: value.getDate()
-      };
-    }
-    return null;
-  }
-
-  toModel(date: NgbDateStruct | null): Date | null {
-    return date ? new Date(date.year, date.month - 1, date.day) : null;
-  }
-}
 
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
@@ -57,7 +39,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   selector: 'app-modal-view-event',
   templateUrl: './modal-view-event.component.html',
   providers: [
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 
@@ -68,6 +50,7 @@ export class ModalViewEventComponent implements OnDestroy {
 
   event: IEvent | null = null;
   isEditing: boolean = false;
+  viewEventErrorMessage: string | null = null;
   onDestroy = new Subject();
 
   constructor(public activeModal: NgbActiveModal, private eventsService: EventsService, private dateAdapter: NgbDateAdapter<string>) {
@@ -80,14 +63,18 @@ export class ModalViewEventComponent implements OnDestroy {
               month: event.dp.getMonth() + 1,
               day: event.dp.getDate()
             })!
-            console.log(this.date, event.dp)
           }
         },
         error: (err) => {
           console.error(err);
         }
       }
-    );
+    )
+
+    this.eventsService
+      .$createEventError
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(message => this.viewEventErrorMessage = message);
   }
 
   ngOnDestroy(): void {

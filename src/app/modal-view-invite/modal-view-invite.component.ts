@@ -25,7 +25,7 @@ export class ModalViewInviteComponent implements OnDestroy {
   }
 
   onDeleteEventClick(event: IEvent) {
-    this.eventsService.removeEventFromUser(event);
+    this.eventsService.removeInviteFromUser(event);
   }
 
 }

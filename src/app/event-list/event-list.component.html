@@ -1,19 +1,23 @@
-<button (click)="openModal()" class="btn btn-outline-primary">Create Event</button>
+<div class="bg-secondary min-vh-100">
+  <button (click)="openModal()" class="btn btn-info btn-outline-dark m-3 p-3">Create an Event</button>
 
-<div class="d-flex">
-  <div class="w-50 p-2"> Events
-    <app-event
-      *ngFor="let event of eventList"
-      [event]="event"
-      class="w-25 p-2 d-flex"
-    ></app-event>
-  </div>
+  <div class="d-flex">
+    <div class="w-50 p-2 m-5 bg-dark rounded-5 d-flex flex-column align-items-center">
+      <h2 class="text-white">Events</h2>
+      <app-event
+        *ngFor="let event of eventList"
+        [event]="event"
+        class="p-2 d-flex w-100"
+      ></app-event>
+    </div>
 
-  <div class="w-50 p-2"> Invites
-    <app-invite
-      *ngFor="let invite of inviteList"
-      [event]="invite"
-      class="w-25 p-2 d-flex"
-    ></app-invite>
+    <div class="w-50 p-2 m-5 bg-dark rounded-5 d-flex flex-column align-items-center">
+      <h2 class="text-white">Invites</h2>
+      <app-invite
+        *ngFor="let invite of inviteList"
+        [event]="invite"
+        class="p-2 d-flex w-100"
+      ></app-invite>
+    </div>
   </div>
 </div>
